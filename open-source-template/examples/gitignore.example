@@ -1,0 +1,47 @@
+# Merge into .gitignore. Enable only patterns that describe generated/local files
+# in this project; do not replace an existing ignore file wholesale.
+
+# Local operating-system/editor files.
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Local environment configuration; keep sanitized examples available to commit.
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.*.example
+
+# Optional dedicated environment for the Git-hook bundle.
+.venv-hooks/
+
+# Python: uncomment the relevant generated paths.
+# __pycache__/
+# *.py[cod]
+# .venv/
+# .pytest_cache/
+# .ruff_cache/
+# .coverage
+# htmlcov/
+# *.egg-info/
+
+# JavaScript/TypeScript:
+# node_modules/
+# coverage/
+# .next/
+
+# Rust:
+# /target/
+
+# Build/documentation output: choose the actual directories used by the project.
+# /build/
+# /dist/
+# /site/
+
+# Follow the ecosystem's policy for lockfiles; do not blanket-ignore them.
+# Keep shared editor configuration if the project uses it.
+# Ignoring a file does not remove it from existing commits or protect a secret
+# already committed. Keep secret scanning enabled.

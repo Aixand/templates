@@ -1,0 +1,56 @@
+# Optional bundle: read examples/git-hooks/README.md before adopting.
+minimum_pre_commit_version: '4.6.2'
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
+default_stages: [pre-commit, pre-push, manual]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: ['--markdown-linebreak-ext=md,markdown']
+        exclude: '(^|/)(LICENSE(\..*)?|COPYING(\..*)?|DCO|NOTICE(\..*)?)$'
+      - id: end-of-file-fixer
+        exclude: '(^|/)(LICENSE(\..*)?|COPYING(\..*)?|DCO|NOTICE(\..*)?)$'
+      - id: check-merge-conflict
+        args: [--assume-in-merge]
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-json
+      - id: check-toml
+      - id: check-case-conflict
+      - id: check-symlinks
+      - id: detect-private-key
+      - id: check-added-large-files
+        args: [--maxkb=1024, --enforce-all]
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: 91ab4bf57e58b32adf1a122681f6ebe164d081c8 # v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [--verbose]
+
+  - repo: local
+    hooks:
+      - id: repository-file-policy
+        name: Reject coding-assistant repository files
+        entry: python3 scripts/checks/check-repository-files.py
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: dco-checker-tests
+        name: Test the DCO checker before pushing
+        entry: python3 tests/tooling/checks/dco_test.py
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        always_run: true
+      # Add the project's real fast test command, also run in project CI:
+      # - id: project-tests
+      #   name: Project tests before pushing
+      #   entry: REPLACE_WITH_THE_PROJECT_TEST_COMMAND
+      #   language: system
+      #   stages: [pre-push]
+      #   pass_filenames: false
+      #   always_run: true

@@ -1,0 +1,64 @@
+name: Installation template checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ['3.11', '3.14']
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      UV_LINK_MODE: copy
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7.0.0
+        with:
+          version: '0.12.7'
+      - run: rustup toolchain install 1.98.0 --profile minimal --component clippy --component rustfmt
+      - run: ./dev.sh develop
+      - run: ./dev.sh check
+      - run: ./dev.sh test
+      - name: Install pinned workflow linter
+        run: python scripts/install_actionlint.py --output "$RUNNER_TEMP/actionlint"
+      - name: Lint template workflows and profile examples
+        run: '"$RUNNER_TEMP/actionlint" .github/workflows/*.yml examples/workflows/*.yml.example'
+  native-products:
+    name: Product contracts (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2022, macos-14]
+        python: ['3.11', '3.14']
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      UV_LINK_MODE: copy
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7.0.0
+        with:
+          version: '0.12.7'
+      - run: rustup toolchain install 1.98.0 --profile minimal --component clippy --component rustfmt
+      - name: Exercise products, SDKs, embedding, bootstrap, and lifecycle natively
+        run: python -B -m unittest discover -s tests -p test_products.py -v
+      - name: Verify Windows product metadata and terminal command defaults
+        run: python -B -m unittest discover -s tests -p test_command_environment.py -v

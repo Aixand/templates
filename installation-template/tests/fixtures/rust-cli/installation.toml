@@ -1,0 +1,10 @@
+schema = 1
+profile = "rust-cli"
+manifest = "Cargo.toml"
+resources = ["assets/greeting.txt", "LICENSE"]
+
+[verification]
+commands = [["{command:fixture-rust-cli}", "--self-test"]]
+
+[install]
+stateful = false

@@ -1,0 +1,69 @@
+name: Template checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Template validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Test GitHub setup tool without modifying repositories
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Test bundled DCO checker
+        run: python3 files/tests/tooling/checks/dco_test.py
+      - name: Test bundled repository file policy and real commit hook
+        run: python3 files/tests/tooling/checks/repository_files_test.py
+      - name: Validate optional hook configuration
+        run: |
+          python3 -m venv "$RUNNER_TEMP/hooks-venv"
+          "$RUNNER_TEMP/hooks-venv/bin/python" -m pip install -r examples/git-hooks/requirements-hooks.txt
+          "$RUNNER_TEMP/hooks-venv/bin/python" -m pre_commit validate-config examples/git-hooks/.pre-commit-config.yaml
+      - name: Exercise the optional hook bundle
+        shell: bash
+        run: |
+          smoke_dir="$RUNNER_TEMP/hook-smoke"
+          mkdir -p "$smoke_dir"
+          cp -R files/. "$smoke_dir/"
+          cp examples/git-hooks/.pre-commit-config.yaml "$smoke_dir/"
+          git -C "$smoke_dir" init -q -b main
+          git -C "$smoke_dir" add .
+          cd "$smoke_dir"
+          "$RUNNER_TEMP/hooks-venv/bin/python" -m pre_commit run --all-files --hook-stage pre-commit
+          "$RUNNER_TEMP/hooks-venv/bin/python" -m pre_commit run --all-files --hook-stage pre-push
+          printf 'feat: verify hook setup\n' > "$RUNNER_TEMP/COMMIT_EDITMSG"
+          "$RUNNER_TEMP/hooks-venv/bin/python" -m pre_commit run conventional-pre-commit \
+            --hook-stage commit-msg --commit-msg-filename "$RUNNER_TEMP/COMMIT_EDITMSG"
+      - name: Download and verify actionlint
+        shell: bash
+        env:
+          ACTIONLINT_VERSION: '1.7.12'
+          ACTIONLINT_SHA256: '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8'
+        run: |
+          lint_dir="$RUNNER_TEMP/template-actionlint"
+          mkdir -p "$lint_dir"
+          archive="$lint_dir/actionlint.tar.gz"
+          curl --fail --silent --show-error --location --retry 3 \
+            "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" \
+            --output "$archive"
+          printf '%s  %s\n' "$ACTIONLINT_SHA256" "$archive" | sha256sum --check --status
+          tar -xzf "$archive" -C "$lint_dir" actionlint
+      - name: Lint workflows and workflow examples
+        run: |
+          "$RUNNER_TEMP/template-actionlint/actionlint" \
+            .github/workflows/*.yml files/.github/workflows/*.yml \
+            examples/ci.yml.example examples/license-review.yml.example \
+            examples/git-hooks/.github/workflows/quality.yml

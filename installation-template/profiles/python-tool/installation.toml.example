@@ -1,0 +1,18 @@
+schema = 1
+profile = "python-tool"
+manifest = "pyproject.toml"
+
+[python]
+version = "{{PYTHON_VERSION}}"
+
+[commands]
+# Replace with actual checks/tests and include their tools in the locked dev group.
+check = [["uv", "run", "--locked", "ruff", "check", "src", "tests"]]
+test = [["uv", "run", "--locked", "python", "-m", "unittest", "discover", "-s", "tests", "-v"]]
+
+[verification]
+commands = [["{command:{{COMMAND_NAME}}}", "--help"]]
+
+[install]
+# Review actual persistent-state compatibility before enabling rollback.
+stateful = true

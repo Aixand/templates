@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "include": ["README.md", "CONTRIBUTING.md", "docs/**/*.md"],
+  "exclude": [],
+  "allow_placeholders": false
+}

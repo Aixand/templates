@@ -1,0 +1,70 @@
+{
+  "$defs": {},
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "completed": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "product": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "request": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "result": {
+      "type": "object"
+    },
+    "runtime": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": 2
+    },
+    "stage": {
+      "enum": [
+        "checking",
+        "preparing-runtime",
+        "downloading",
+        "installing",
+        "verified",
+        "reused",
+        "activated",
+        "interrupted",
+        "complete",
+        "result"
+      ]
+    },
+    "total": {
+      "minimum": 0,
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "version": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "stage"
+  ],
+  "title": "Installation progress event, schema 2",
+  "type": "object"
+}

@@ -1,0 +1,18 @@
+# {{TITLE}}
+
+<!-- AUTHOR: Define the operational trigger, owner, system scope, and success. -->
+
+## Prepare
+
+<!-- AUTHOR: State access, prerequisites, target identity, required backup or
+recovery evidence, and impact where applicable. -->
+
+## Perform the operation
+
+<!-- AUTHOR: Give ordered commands with checkpoints and observable results.
+Describe rollback or reconciliation at the step where it becomes relevant. -->
+
+## Verify and finish
+
+<!-- AUTHOR: Confirm the operational result and cleanup. Link relevant contracts
+and escalation guidance. Record evidence in the operational report. -->

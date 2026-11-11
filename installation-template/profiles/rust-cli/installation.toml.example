@@ -1,0 +1,11 @@
+schema = 1
+profile = "rust-cli"
+manifest = "Cargo.toml"
+resources = ["LICENSE"]
+
+[verification]
+commands = [["{command:{{COMMAND_NAME}}}", "--version"]]
+
+[install]
+# Review actual persistent-state compatibility before enabling rollback.
+stateful = true

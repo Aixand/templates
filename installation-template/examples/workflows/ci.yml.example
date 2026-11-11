@@ -1,0 +1,41 @@
+# Copy only after installing the helper and validating the selected profile.
+name: Project CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  project:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7.0.0
+        with:
+          version: '0.12.7'
+      - name: Install selected Rust toolchain when applicable
+        shell: bash
+        run: |
+          if test -f rust-toolchain.toml; then
+            rust_version=$(python -c 'import re,tomllib; v=tomllib.load(open("rust-toolchain.toml","rb"))["toolchain"]["channel"]; assert re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+",v); print(v)')
+            rustup toolchain install "$rust_version" --profile minimal --component clippy --component rustfmt
+          fi
+      - run: ./dev.sh develop
+      - run: ./dev.sh doctor
+      - run: ./dev.sh check
+      - run: ./dev.sh test
+      - run: ./dev.sh package --output dist/ci
+      - run: ./dev.sh verify --artifact dist/ci --install
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: verified-package
+          path: dist/ci/
+          if-no-files-found: error

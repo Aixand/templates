@@ -1,0 +1,9 @@
+schema = 1
+profile = "rust-cli"
+manifest = "crates/app/Cargo.toml"
+
+[verification]
+commands = [["{command:fixture-workspace-app}", "--self-test"]]
+
+[install]
+stateful = false

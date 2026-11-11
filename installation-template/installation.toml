@@ -1,0 +1,12 @@
+schema = 1
+profile = "custom"
+
+[custom]
+name = "installation-template"
+version = "unreleased"
+
+[commands]
+develop = [["uv", "sync", "--locked", "--project", "tools"]]
+check = [["uv", "run", "--locked", "--project", "tools", "python", "-B", "scripts/check_template.py"]]
+test = [["{python}", "-B", "-m", "unittest", "discover", "-s", "tests", "-v"]]
+build = [["uv", "run", "--locked", "--project", "tools", "python", "-B", "scripts/check_template.py"]]

@@ -1,0 +1,14 @@
+# Local documentation instructions
+
+Before documentation work, read these required sources:
+
+- `{{STANDARDS_PATH}}/agent-workflow.md`
+- `{{STANDARDS_PATH}}/standard.md`
+- `{{STANDARDS_PATH}}/style-guide.md`
+- `{{STANDARDS_PATH}}/diagrams.md`
+
+Use the project documentation index for actual commands, terminology, and owners.
+Read the maintenance guide in that directory for contract updates and page moves.
+Keep work inside the user's authorized scope. The workflow describes delegation
+only when authorized. Verify examples and render changed diagrams before reporting
+completion. This entry point stays local and ignored under repository policy.

@@ -1,0 +1,14 @@
+schema = 1
+profile = "custom"
+
+[custom]
+name = "{{PROJECT_NAME}}"
+version = "unreleased"
+
+[commands]
+# This example uses npm; select the actual commands and pinned tools for the app.
+develop = [["npm", "ci"]]
+check = [["npm", "run", "lint"]]
+test = [["npm", "test", "--", "--run"]]
+build = [["npm", "run", "build"]]
+# Packaging/install/publication are unsupported until explicitly implemented.

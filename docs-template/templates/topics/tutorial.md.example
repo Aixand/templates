@@ -1,0 +1,18 @@
+# {{TITLE}}
+
+<!-- AUTHOR: State the concrete result the learner will produce and its scope. -->
+
+## Before you start
+
+<!-- AUTHOR: List prerequisites, supported platform, working directory, and
+safe replacement values. State what resources the example creates. -->
+
+## Produce the result
+
+<!-- AUTHOR: Give one working path in ordered steps. Put runnable commands and
+observable results together. Link extended explanation outside this procedure. -->
+
+## Verify and clean up
+
+<!-- AUTHOR: Show how to confirm success, diagnose likely failure, and remove
+only resources created by this example. Link a useful next task. -->

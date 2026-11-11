@@ -1,0 +1,7 @@
+schema = 1
+profile = "rust-library"
+manifest = "Cargo.toml"
+
+[verification]
+# A real independent consumer must exercise the intended public API.
+consumer = '''{{RUST_CONSUMER_MAIN}}'''

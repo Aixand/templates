@@ -1,0 +1,67 @@
+# {{PROJECT_NAME}}
+
+{{PROJECT_SUMMARY}}
+
+## Status and compatibility
+
+{{PROJECT_STATUS_AND_COMPATIBILITY}}
+
+<!-- Describe supported platforms/runtimes and real stability constraints.
+Add build badges or version claims only when their targets exist. -->
+
+## Installation
+
+{{INSTALLATION_STEPS}}
+
+<!-- Use actual package names and commands. Include prerequisites and the
+supported installation methods. Test them in a clean environment. -->
+
+## Quick start
+
+{{QUICKSTART_EXAMPLE}}
+
+<!-- Show a small working use case, any initialization steps, and its expected
+result. Use synthetic inputs and explain any credentials the user supplies. -->
+
+## Documentation and changes
+
+- [Documentation]({{DOCS_URL}})
+- [Changelog](CHANGELOG.md)
+
+## Development
+
+{{DEVELOPMENT_SETUP_AND_CHECKS}}
+
+<!-- Link to an existing development guide if the commands belong there. -->
+
+## AI-assisted development
+
+<!-- Keep this factual disclosure only if AI tools have been used during the
+project's development. Otherwise remove or revise this section accurately. -->
+
+AI tools have been used during development of this project. All contributions,
+including AI-assisted contributions, must meet the project's contribution,
+review, and licensing requirements.
+
+AI-generated output must not be assumed to be original or free of third-party
+restrictions. Contributors must review their submissions, have the right to
+contribute them, identify known third-party sources, and preserve applicable
+licenses and notices.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution requirements and
+instructions for reporting ownership or licensing concerns.
+
+## Contributing and support
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for contribution rights, DCO sign-offs,
+AI-assisted contributions, and review expectations. Follow the
+[code of conduct](CODE_OF_CONDUCT.md).
+
+For help, see [SUPPORT.md](SUPPORT.md) or use the
+[issue forms]({{REPOSITORY_URL}}/issues/new/choose). Report vulnerabilities
+privately using [SECURITY.md](SECURITY.md).
+
+## License
+
+Original project material is licensed under [Apache-2.0](LICENSE). Included
+third-party material retains its applicable licenses and notices.

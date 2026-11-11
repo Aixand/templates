@@ -1,0 +1,153 @@
+# Linux example. Select and qualify your actual OS/libc baseline before advertising
+# support. Add real native qualification jobs for additional supported targets.
+name: Publish native download
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+concurrency:
+  group: publish-native-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: '3.11'
+      - name: Install selected Rust toolchain
+        shell: bash
+        run: |
+          rust_version=$(python -c 'import re,tomllib; v=tomllib.load(open("rust-toolchain.toml","rb"))["toolchain"]["channel"]; assert re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+",v); print(v)')
+          rustup toolchain install "$rust_version" --profile minimal --component clippy --component rustfmt
+      - name: Validate selected tag and source
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: ./dev.sh release-check --version "$RELEASE_TAG"
+      - run: ./dev.sh develop
+      - run: ./dev.sh check
+      - run: ./dev.sh test
+      - run: ./dev.sh package --output dist/release
+      - run: ./dev.sh verify --artifact dist/release --install
+      - name: Bind verified package to clean release inputs
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: ./dev.sh release-check --version "$RELEASE_TAG" --artifact dist/release
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: native-release
+          path: dist/release/
+          if-no-files-found: error
+  attest:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: native-release
+          path: dist/release
+      - uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
+        with:
+          subject-path: dist/release/*
+  publish:
+    needs: attest
+    runs-on: ubuntu-24.04
+    environment: native-release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: native-release
+          path: dist/release
+      - name: Publish exact verified files
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, subprocess
+          root = pathlib.Path("dist/release")
+          manifest = json.loads((root / "release-manifest.json").read_text())
+          assert manifest["profile"] == "rust-cli"
+          flags = ["--latest=false"]
+          if "-" in manifest["version"].split("+", 1)[0]:
+              flags.append("--prerelease")
+          subprocess.run(["gh", "release", "create", os.environ["RELEASE_TAG"],
+                          *map(str, sorted(root.iterdir())), "--verify-tag", "--generate-notes", *flags], check=True)
+          PY
+  confirm:
+    needs: publish
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: native-release
+          path: dist/expected
+      - name: Download published version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release download "$RELEASE_TAG" --dir dist/published
+      - name: Bind published manifest to the verified run
+        run: cmp dist/expected/release-manifest.json dist/published/release-manifest.json
+      - name: Verify expected provenance identity
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: gh attestation verify dist/published/release-manifest.json --repo "$GH_REPO" --signer-workflow "$GH_REPO/.github/workflows/publish-native.yml" --source-digest "$RELEASE_SHA"
+      - run: ./dev.sh verify --artifact dist/published --install
+  promote:
+    needs: confirm
+    runs-on: ubuntu-24.04
+    environment: native-release
+    permissions:
+      contents: write
+    steps:
+      - name: Promote only a newer verified stable version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          python - <<'PY'
+          import json, os, re, subprocess
+          tag = os.environ["RELEASE_TAG"]
+          stable = re.fullmatch(r"v(\d+)\.(\d+)\.(\d+)(?:\+[-\w.]+)?", tag)
+          if not stable:
+              print("Prerelease: stable latest unchanged")
+              raise SystemExit(0)
+          response = subprocess.run(["gh", "api", "repos/" + os.environ["GH_REPO"] + "/releases/latest"], capture_output=True, text=True)
+          data = json.loads(response.stdout)
+          if response.returncode and str(data.get("status")) != "404":
+              raise SystemExit(response.stderr)
+          if response.returncode == 0:
+              current = re.fullmatch(r"v(\d+)\.(\d+)\.(\d+)(?:\+[-\w.]+)?", data["tag_name"])
+              if not current:
+                  raise SystemExit("Existing latest has an unfamiliar tag format; use an explicit promotion procedure")
+              if tuple(map(int, stable.groups())) <= tuple(map(int, current.groups())):
+                  print("Existing stable version retained")
+                  raise SystemExit(0)
+          subprocess.run(["gh", "release", "edit", tag, "--latest"], check=True)
+          PY

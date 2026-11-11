@@ -1,0 +1,31 @@
+# Adapt and copy to .github/workflows/ci.yml.
+name: Project CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Project tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      # Use ordinary pull_request CI for proposed DCO tooling changes.
+      - name: Test proposed DCO checker
+        run: python3 tests/tooling/checks/dco_test.py
+      # Add pinned runtime setup and dependency installation as needed.
+      # Replace this step with actual build, test, lint, and packaging commands.
+      - name: Configure project checks before enabling this workflow
+        run: |
+          echo 'Replace this step with the project verification commands.' >&2
+          exit 1

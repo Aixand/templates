@@ -1,0 +1,21 @@
+# Roadmap for {{PROJECT_NAME}}
+
+<!-- Keep this document only if someone will maintain it. Replace placeholders
+with actual priorities and links; avoid promised dates without a real commitment. -->
+
+This roadmap describes current direction. Priorities may change as the project
+learns from users and maintainer capacity changes.
+
+## Current priorities
+
+{{CURRENT_PRIORITIES_WITH_ISSUE_LINKS}}
+
+## Under consideration
+
+{{IDEAS_UNDER_CONSIDERATION}}
+
+## Proposing a direction
+
+Explain the use case and alternatives in a
+[feature request]({{REPOSITORY_URL}}/issues/new/choose). Track released behavior
+and migration information in [CHANGELOG.md](CHANGELOG.md).

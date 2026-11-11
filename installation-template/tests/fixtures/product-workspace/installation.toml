@@ -1,0 +1,52 @@
+schema = 2
+profile = "workspace"
+
+[workspace]
+name = "example-suite"
+version = "1.0.0"
+default-product = "example-suite"
+targets = ["linux-x86_64-gnu", "linux-arm64-gnu", "macos-x86_64", "macos-arm64", "windows-x86_64-msvc", "windows-arm64-msvc"]
+
+[commands]
+check = [["{python}", "-B", "app/tool.py", "--self-test"]]
+test = [["{python}", "-B", "app/tool.py", "--self-test"]]
+
+[components.application]
+adapter = "payload"
+files = [{source = "app/tool.py", destination = "app/tool.py"}]
+
+[components.extra]
+adapter = "payload"
+files = [{source = "app/extra.txt", destination = "share/extra.txt"}]
+
+[products."example-suite/alpha"]
+adapter = "application"
+components = ["application"]
+python = "3.14"
+stateful = false
+verification = [["{command:alpha}", "--self-test"]]
+
+[products."example-suite/alpha".commands.alpha]
+program = "app/tool.py"
+args = ["alpha"]
+runtime = "python"
+
+[products."example-suite/alpha".variants.extended]
+components = ["application", "extra"]
+
+[products."example-suite/beta"]
+adapter = "application"
+version = "2.1.0"
+components = ["application"]
+python = "3.14"
+dependencies = ["example-suite/alpha"]
+stateful = true
+verification = [["{command:beta}", "--self-test"]]
+
+[products."example-suite/beta".commands.beta]
+program = "app/tool.py"
+args = ["beta"]
+runtime = "python"
+
+[groups.example-suite]
+products = ["example-suite/alpha", "example-suite/beta"]

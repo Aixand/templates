@@ -1,0 +1,34 @@
+schema = 2
+profile = "workspace"
+
+[workspace]
+name = "python-fixture"
+version = "1.0.0"
+default-product = "python-fixture"
+targets = ["linux-x86_64-gnu", "linux-arm64-gnu", "macos-x86_64", "macos-arm64", "windows-x86_64-msvc", "windows-arm64-msvc"]
+
+[components.library]
+adapter = "python"
+path = "library"
+python = "3.14"
+verification = [["{python}", "-I", "-c", "from fixture_product_library import message; assert message() == 'independent Python resource'"]]
+
+[components.tool]
+adapter = "python"
+path = "tool"
+python = "3.14"
+dependencies = ["library"]
+
+[products."python-fixture/tool"]
+adapter = "python"
+version-from = "tool"
+components = ["tool"]
+python = "3.14"
+stateful = false
+verification = [["{command:fixture-python-product}", "--self-test"]]
+
+[products."python-fixture/tool".commands.fixture-python-product]
+program = "env/bin/fixture-python-product"
+
+[groups.python-fixture]
+products = ["python-fixture/tool"]

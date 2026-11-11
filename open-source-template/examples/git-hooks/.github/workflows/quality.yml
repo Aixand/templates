@@ -1,0 +1,49 @@
+name: Repository quality
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    name: Repository hygiene
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install hook runner
+        run: |
+          python3 -m venv "$RUNNER_TEMP/hooks-venv"
+          "$RUNNER_TEMP/hooks-venv/bin/python" -m pip install -r requirements-hooks.txt
+      - name: Check repository files
+        run: |
+          "$RUNNER_TEMP/hooks-venv/bin/python" -m pre_commit run --all-files --hook-stage pre-commit
+
+  commit-messages:
+    name: Commit messages
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install hook runner
+        run: |
+          python3 -m venv "$RUNNER_TEMP/hooks-venv"
+          "$RUNNER_TEMP/hooks-venv/bin/python" -m pip install -r requirements-hooks.txt
+      - name: Check introduced commit messages
+        env:
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          "$RUNNER_TEMP/hooks-venv/bin/python" scripts/checks/check-commit-messages.py "$PR_BASE" "$PR_HEAD"

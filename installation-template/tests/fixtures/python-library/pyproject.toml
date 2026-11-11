@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fixture-python-library"
+version = "0.0.0"
+requires-python = ">=3.11"
+description = "Disposable installation-template library fixture"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+
+[dependency-groups]
+dev = ["ruff==0.15.7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+fixture_library = ["greeting.txt"]

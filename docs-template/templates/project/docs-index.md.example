@@ -1,0 +1,14 @@
+# Find the right {{PROJECT_NAME}} guide
+
+Documentation standard: 0.1.0.
+
+<!-- AUTHOR: Declare development-branch or release scope and relevant platforms. -->
+
+## Choose a reader goal
+
+<!-- AUTHOR: Link first use, common tasks, exact reference, architecture, and
+contributor setup only where these pages exist. Keep the table task-oriented. -->
+
+## Apply the shared rules
+
+Authors use the [documentation standard](_standards/README.md).

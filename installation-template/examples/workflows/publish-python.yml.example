@@ -1,0 +1,83 @@
+# Install as .github/workflows/publish-python.yml and register that filename
+# and the pypi environment as this project's PyPI Trusted Publisher.
+name: Publish Python package
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+concurrency:
+  group: publish-python-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7.0.0
+        with:
+          version: '0.12.7'
+      - name: Validate selected tag and source
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: ./dev.sh release-check --version "$RELEASE_TAG"
+      - run: ./dev.sh develop
+      - run: ./dev.sh check
+      - run: ./dev.sh test
+      - run: ./dev.sh package --output dist/release
+      - run: ./dev.sh verify --artifact dist/release --install
+      - name: Bind verified package to clean release inputs
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: ./dev.sh release-check --version "$RELEASE_TAG" --artifact dist/release
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: python-release
+          path: dist/release/
+          if-no-files-found: error
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: python-release
+          path: dist/release
+      - uses: pypa/gh-action-pypi-publish@106e0b0b7c337fa67ed433972f777c6357f78598 # v1.13.0
+        with:
+          packages-dir: dist/release/python/
+  confirm:
+    needs: publish
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: '3.11'
+      - uses: astral-sh/setup-uv@eb1897b8dc4b5d5bfe39a428a8f2304605e0983c # v7.0.0
+        with:
+          version: '0.12.7'
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: python-release
+          path: dist/release
+      - name: Confirm PyPI wheel identity and install it
+        shell: bash
+        run: |
+          python -B scripts/dev/confirm_python.py --artifact dist/release
+          ./dev.sh verify --artifact dist/release --install

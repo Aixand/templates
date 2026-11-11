@@ -1,0 +1,64 @@
+# Releasing {{PROJECT_NAME}}
+
+<!-- Adapt this guide to the actual release process before copying it to
+docs/RELEASING.md. Replace every placeholder and remove editing instructions.
+Adopting this guide does not create a release or a tag. -->
+
+## Responsibilities and versioning
+
+Release maintainers: {{RELEASE_MAINTAINERS}}
+
+Version policy: {{VERSIONING_POLICY}}
+
+Tag format: {{RELEASE_TAG_FORMAT}}
+
+Distribution channels and artifacts: {{DISTRIBUTION_CHANNELS_AND_ARTIFACTS}}
+
+Document which interfaces are covered by compatibility promises, how breaking
+changes are communicated, and how prereleases are identified. Use the project's
+actual version policy; do not claim Semantic Versioning unless it is followed.
+
+## Prepare the release
+
+1. Identify the reviewed commit to release and confirm the required CI checks
+   passed. Check unresolved release blockers and relevant security reports.
+2. Update versions in the project's actual source and package metadata, and
+   update lockfiles only as required by its tooling. Record migration instructions
+   for breaking changes and update installation examples when needed.
+3. Review [CHANGELOG.md](../CHANGELOG.md) and prepare a release section with the
+   intended version. Use the actual publication date when publishing; keep work
+   that is not included under Unreleased. Review generated release notes for
+   accuracy, attribution, and any private security information.
+4. Build and test the artifacts that users will receive, including supported
+   platforms. Confirm the archives/packages contain LICENSE and all required
+   third-party licenses and notices. Generate checksums, an SBOM, signatures,
+   or provenance if the project's distribution process requires them.
+
+Project-specific verification commands:
+
+```text
+{{RELEASE_VERIFICATION_COMMANDS}}
+```
+
+## Publish
+
+When a release is requested, follow the project's publishing procedure using
+the reviewed commit and authorized publishing identity:
+
+```text
+{{PUBLISHING_PROCEDURE}}
+```
+
+Create the intended release tag as part of that procedure, publish the matching
+artifacts and notes, and verify that the registry/download links point to the
+expected version. Keep credentials out of logs, commits, and release artifacts.
+
+## Verify and follow up
+
+- Install or download the published version into a clean environment and run the
+  documented quick start. Check the reported version and supported upgrade path.
+- Confirm release notes, checksums, required notices, and links are accessible.
+- Prepare the next Unreleased section and any development-version changes.
+- If a published artifact is faulty, document the issue and use the registry's
+  supported correction, withdrawal, or new-version process. Avoid silently
+  replacing published artifacts or moving an existing release tag.

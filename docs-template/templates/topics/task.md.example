@@ -1,0 +1,21 @@
+# {{TITLE}}
+
+<!-- AUTHOR: State when to use this task and what completion means. -->
+
+## Prerequisites
+
+<!-- AUTHOR: Identify setup, permissions if relevant, directory, platform, and
+inputs. Omit this section only when no prerequisites are needed. -->
+
+## Complete the task
+
+<!-- AUTHOR: Give ordered actions and commands. Define placeholders first. -->
+
+## Verify the result
+
+<!-- AUTHOR: Describe observable success and any relevant cleanup. -->
+
+## Recover from failure
+
+<!-- AUTHOR: Name likely failure symptoms, their diagnostic checks, and the
+safe next action. Link the exact reference instead of duplicating its inventory. -->

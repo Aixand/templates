@@ -1,0 +1,29 @@
+# Adapt and copy to .github/workflows/license-review.yml.
+name: License review
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  license-review:
+    name: License review
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      # Choose tooling that fits the actual ecosystem and distributed artifacts.
+      # Check added dependencies, copied code/assets, and packaged notices.
+      # Unknown license metadata should require review, not silently pass.
+      - name: Configure license verification before enabling this workflow
+        run: |
+          echo 'Replace this step with project-specific license and notice checks.' >&2
+          exit 1

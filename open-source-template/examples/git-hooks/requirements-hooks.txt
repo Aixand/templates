@@ -1,0 +1,2 @@
+# Install into a dedicated environment; hook repositories are pinned by SHA.
+pre-commit==4.6.2

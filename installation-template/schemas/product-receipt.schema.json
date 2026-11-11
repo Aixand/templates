@@ -1,0 +1,1162 @@
+{
+  "$defs": {
+    "v2Command": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "env": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "propertyNames": {
+            "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+          },
+          "type": "object"
+        },
+        "program": {
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+          "type": "string"
+        },
+        "runtime": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "program"
+      ],
+      "type": "object"
+    },
+    "v2Component": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter": {
+          "enum": [
+            "payload",
+            "python",
+            "cargo",
+            "legacy"
+          ]
+        },
+        "binaries": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "build": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "dependencies": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "extras": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "features": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "files": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "destination": {
+                "minLength": 1,
+                "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+                "type": "string"
+              },
+              "executable": {
+                "type": "boolean"
+              },
+              "source": {
+                "minLength": 1,
+                "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "source",
+              "destination"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "manifest": {
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+          "type": "string"
+        },
+        "python": {
+          "pattern": "^3\\.[0-9]+(\\.[0-9]+)?$",
+          "type": "string"
+        },
+        "source": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "type": "string"
+        },
+        "toolchain": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+          "type": "string"
+        },
+        "verification": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "type": "array"
+        },
+        "wheels": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "adapter"
+      ],
+      "type": "object"
+    },
+    "v2Entry": {
+      "additionalProperties": false,
+      "properties": {
+        "dependency_releases": {
+          "additionalProperties": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "propertyNames": {
+            "pattern": "^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "explicit": {
+          "type": "boolean"
+        },
+        "origin": {
+          "enum": [
+            "source",
+            "artifact"
+          ]
+        },
+        "payload": {
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+          "type": "string"
+        },
+        "previous": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/v2Entry"
+            }
+          ]
+        },
+        "product": {
+          "$ref": "#/$defs/v2Product"
+        },
+        "python": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "python_home": {
+          "type": "string"
+        },
+        "python_library": {
+          "type": "string"
+        },
+        "runtimes": {
+          "additionalProperties": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "site_packages": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "product",
+        "payload",
+        "runtimes",
+        "python",
+        "explicit",
+        "previous",
+        "dependency_releases",
+        "python_home",
+        "python_library",
+        "site_packages",
+        "origin"
+      ],
+      "type": "object"
+    },
+    "v2File": {
+      "additionalProperties": false,
+      "properties": {
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "size": {
+          "maximum": 2147483648,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sha256",
+        "size"
+      ],
+      "type": "object"
+    },
+    "v2Group": {
+      "additionalProperties": false,
+      "properties": {
+        "products": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "releases": {
+          "additionalProperties": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "propertyNames": {
+            "pattern": "^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "products",
+        "releases"
+      ],
+      "type": "object"
+    },
+    "v2GroupConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "products": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "release-tag": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "products"
+      ],
+      "type": "object"
+    },
+    "v2Product": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter": {
+          "enum": [
+            "native",
+            "python",
+            "hybrid",
+            "application"
+          ]
+        },
+        "baseline": {
+          "additionalProperties": false,
+          "minProperties": 1,
+          "properties": {
+            "libc": {
+              "pattern": "^\\d+(?:\\.\\d+)*$",
+              "type": "string"
+            },
+            "os-version": {
+              "pattern": "^\\d+(?:\\.\\d+)*$",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "type": "object"
+        },
+        "commands": {
+          "additionalProperties": {
+            "$ref": "#/$defs/v2Command"
+          },
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "dependencies": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "extras": {
+          "additionalProperties": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "files": {
+          "additionalProperties": {
+            "$ref": "#/$defs/v2ProductFile"
+          },
+          "minProperties": 1,
+          "propertyNames": {
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "id": {
+          "pattern": "^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$",
+          "type": "string"
+        },
+        "license_acceptance": {
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "minLength": 1,
+              "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "type": "object"
+        },
+        "notices": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "python": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "release": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "runtime_records": {
+          "additionalProperties": {
+            "$ref": "#/$defs/v2Runtime"
+          },
+          "type": "object"
+        },
+        "runtimes": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "sources": {
+          "additionalProperties": {
+            "$ref": "#/$defs/v2Source"
+          },
+          "type": "object"
+        },
+        "stateful": {
+          "type": "boolean"
+        },
+        "target": {
+          "enum": [
+            "linux-x86_64-gnu",
+            "linux-arm64-gnu",
+            "macos-x86_64",
+            "macos-arm64",
+            "windows-x86_64-msvc",
+            "windows-arm64-msvc"
+          ]
+        },
+        "variant": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "verification": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "adapter",
+        "target",
+        "baseline",
+        "variant",
+        "dependencies",
+        "runtimes",
+        "stateful",
+        "commands",
+        "verification",
+        "python",
+        "files",
+        "sources",
+        "runtime_records",
+        "release",
+        "extras",
+        "notices"
+      ],
+      "type": "object"
+    },
+    "v2ProductConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter": {
+          "enum": [
+            "native",
+            "python",
+            "hybrid",
+            "application"
+          ]
+        },
+        "commands": {
+          "additionalProperties": {
+            "$ref": "#/$defs/v2Command"
+          },
+          "minProperties": 1,
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "components": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "dependencies": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "extras": {
+          "additionalProperties": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "license-acceptance": {
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+          "type": "string"
+        },
+        "notices": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "python": {
+          "pattern": "^3\\.[0-9]+(\\.[0-9]+)?$",
+          "type": "string"
+        },
+        "release-tag": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "runtimes": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "stateful": {
+          "type": "boolean"
+        },
+        "targets": {
+          "items": {
+            "enum": [
+              "linux-x86_64-gnu",
+              "linux-arm64-gnu",
+              "macos-x86_64",
+              "macos-arm64",
+              "windows-x86_64-msvc",
+              "windows-arm64-msvc"
+            ]
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "variants": {
+          "additionalProperties": {
+            "additionalProperties": false,
+            "properties": {
+              "commands": {
+                "additionalProperties": {
+                  "$ref": "#/$defs/v2Command"
+                },
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "components": {
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "dependencies": {
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "extras": {
+                "additionalProperties": {
+                  "items": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "uniqueItems": true
+                },
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "runtimes": {
+                "items": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": true
+              }
+            },
+            "required": [],
+            "type": "object"
+          },
+          "propertyNames": {
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "verification": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "version-from": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "adapter",
+        "components",
+        "commands",
+        "verification"
+      ],
+      "type": "object"
+    },
+    "v2ProductFile": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact": {
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+          "type": "string"
+        },
+        "executable": {
+          "type": "boolean"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "size": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "artifact",
+        "sha256",
+        "size",
+        "executable"
+      ],
+      "type": "object"
+    },
+    "v2Runtime": {
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "not": {
+            "required": [
+              "url"
+            ]
+          },
+          "required": [
+            "artifact"
+          ]
+        },
+        {
+          "not": {
+            "required": [
+              "artifact"
+            ]
+          },
+          "required": [
+            "url"
+          ]
+        }
+      ],
+      "properties": {
+        "artifact": {
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+          "type": "string"
+        },
+        "executable": {
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+          "type": "string"
+        },
+        "format": {
+          "enum": [
+            "tar",
+            "zip"
+          ]
+        },
+        "role": {
+          "enum": [
+            "python",
+            "node",
+            "uv",
+            "helper",
+            "other"
+          ]
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "strip": {
+          "maximum": 8,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "target": {
+          "enum": [
+            "linux-x86_64-gnu",
+            "linux-arm64-gnu",
+            "macos-x86_64",
+            "macos-arm64",
+            "windows-x86_64-msvc",
+            "windows-arm64-msvc"
+          ]
+        },
+        "url": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "sha256",
+        "executable",
+        "role",
+        "target"
+      ],
+      "type": "object"
+    },
+    "v2RuntimeConfig": {
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "not": {
+            "required": [
+              "url"
+            ]
+          },
+          "required": [
+            "path"
+          ]
+        },
+        {
+          "not": {
+            "required": [
+              "path"
+            ]
+          },
+          "required": [
+            "url"
+          ]
+        }
+      ],
+      "properties": {
+        "executable": {
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+          "type": "string"
+        },
+        "format": {
+          "enum": [
+            "tar",
+            "zip"
+          ]
+        },
+        "path": {
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "python",
+            "node",
+            "uv",
+            "helper",
+            "other"
+          ]
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "strip": {
+          "maximum": 8,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "target": {
+          "enum": [
+            "linux-x86_64-gnu",
+            "linux-arm64-gnu",
+            "macos-x86_64",
+            "macos-arm64",
+            "windows-x86_64-msvc",
+            "windows-arm64-msvc"
+          ]
+        },
+        "url": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "sha256",
+        "executable",
+        "role",
+        "target"
+      ],
+      "type": "object"
+    },
+    "v2RuntimeMatrix": {
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "enum": [
+            "python",
+            "node",
+            "uv",
+            "helper",
+            "other"
+          ]
+        },
+        "targets": {
+          "additionalProperties": {
+            "additionalProperties": false,
+            "oneOf": [
+              {
+                "not": {
+                  "required": [
+                    "url"
+                  ]
+                },
+                "required": [
+                  "path"
+                ]
+              },
+              {
+                "not": {
+                  "required": [
+                    "path"
+                  ]
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            ],
+            "properties": {
+              "executable": {
+                "minLength": 1,
+                "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+                "type": "string"
+              },
+              "format": {
+                "enum": [
+                  "tar",
+                  "zip"
+                ]
+              },
+              "path": {
+                "minLength": 1,
+                "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+                "type": "string"
+              },
+              "sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "strip": {
+                "maximum": 8,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "url": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "sha256",
+              "executable"
+            ],
+            "type": "object"
+          },
+          "minProperties": 1,
+          "propertyNames": {
+            "enum": [
+              "linux-x86_64-gnu",
+              "linux-arm64-gnu",
+              "macos-x86_64",
+              "macos-arm64",
+              "windows-x86_64-msvc",
+              "windows-arm64-msvc"
+            ]
+          },
+          "type": "object"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "targets"
+      ],
+      "type": "object"
+    },
+    "v2Source": {
+      "additionalProperties": false,
+      "properties": {
+        "commit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dirty": {
+          "type": "boolean"
+        },
+        "locks": {
+          "additionalProperties": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "source_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "commit",
+        "dirty",
+        "source_sha256",
+        "locks"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "groups": {
+      "additionalProperties": {
+        "$ref": "#/$defs/v2Group"
+      },
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$",
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "origin": {
+      "const": "artifact-helper"
+    },
+    "owner": {
+      "pattern": "^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$",
+      "type": "string"
+    },
+    "products": {
+      "additionalProperties": {
+        "$ref": "#/$defs/v2Entry"
+      },
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$",
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "requests": {
+      "additionalProperties": {
+        "additionalProperties": false,
+        "properties": {
+          "completed": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "input": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "running",
+              "interrupted",
+              "complete"
+            ]
+          }
+        },
+        "required": [
+          "input",
+          "status",
+          "completed"
+        ],
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "schema": {
+      "const": 2
+    },
+    "scope": {
+      "enum": [
+        "shared",
+        "private"
+      ]
+    },
+    "shims": {
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "file": {
+                "minLength": 1,
+                "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*[\\\\:\\r\\n])[^/]+(?:/[^/]+)*$",
+                "type": "string"
+              },
+              "sha256": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "size": {
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "file",
+              "sha256",
+              "size"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+        "type": "string"
+      },
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema",
+    "origin",
+    "scope",
+    "owner",
+    "products",
+    "groups",
+    "requests",
+    "shims"
+  ],
+  "title": "Product store receipt, schema 2",
+  "type": "object"
+}

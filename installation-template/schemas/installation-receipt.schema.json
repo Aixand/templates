@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Managed prefix selection receipt, schema 1",
+  "description": "Payload IDs bind retained release manifests; prefix identity is held in the ownership marker.",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "current", "previous", "commands"],
+  "properties": {
+    "schema": {"const": 1},
+    "current": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "previous": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "commands": {"type": "array", "items": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"}, "uniqueItems": true}
+  }
+}

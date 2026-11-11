@@ -1,0 +1,52 @@
+schema = 2
+profile = "workspace"
+
+[workspace]
+name = "{{PROJECT_NAME}}"
+version = "1.0.0"
+default-product = "{{PROJECT_NAME}}"
+targets = ["linux-x86_64-gnu", "linux-arm64-gnu", "macos-x86_64", "macos-arm64", "windows-x86_64-msvc", "windows-arm64-msvc"]
+
+[commands]
+check = [["{python}", "-B", "app/tool.py", "--self-test"]]
+test = [["{python}", "-B", "app/tool.py", "--self-test"]]
+
+[components.application]
+adapter = "payload"
+files = [{source = "app/tool.py", destination = "app/tool.py"}]
+
+[components.extra]
+adapter = "payload"
+files = [{source = "app/extra.txt", destination = "share/extra.txt"}]
+
+[products."{{PROJECT_NAME}}/alpha"]
+adapter = "application"
+components = ["application"]
+python = "{{PYTHON_VERSION}}"
+stateful = false
+verification = [["{command:alpha}", "--self-test"]]
+
+[products."{{PROJECT_NAME}}/alpha".commands.alpha]
+program = "app/tool.py"
+args = ["alpha"]
+runtime = "python"
+
+[products."{{PROJECT_NAME}}/alpha".variants.extended]
+components = ["application", "extra"]
+
+[products."{{PROJECT_NAME}}/beta"]
+adapter = "application"
+version = "2.1.0"
+components = ["application"]
+python = "{{PYTHON_VERSION}}"
+dependencies = ["{{PROJECT_NAME}}/alpha"]
+stateful = true
+verification = [["{command:beta}", "--self-test"]]
+
+[products."{{PROJECT_NAME}}/beta".commands.beta]
+program = "app/tool.py"
+args = ["beta"]
+runtime = "python"
+
+[groups.{{PROJECT_NAME}}]
+products = ["{{PROJECT_NAME}}/alpha", "{{PROJECT_NAME}}/beta"]

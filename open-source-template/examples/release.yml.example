@@ -1,0 +1,21 @@
+# Copy to .github/release.yml after matching categories to the project's labels.
+# This configures GitHub's generated release-note text; it does not publish,
+# create tags, enforce versioning, or update CHANGELOG.md.
+# Keep the catch-all category last. Review generated notes before publishing.
+changelog:
+  categories:
+    - title: Breaking changes
+      labels:
+        - breaking-change
+    - title: Features and improvements
+      labels:
+        - enhancement
+    - title: Fixes
+      labels:
+        - bug
+    - title: Documentation
+      labels:
+        - documentation
+    - title: Other changes
+      labels:
+        - '*'

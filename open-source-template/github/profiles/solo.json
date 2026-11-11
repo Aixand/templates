@@ -1,0 +1,41 @@
+{
+  "repository_settings": {
+    "allow_merge_commit": true,
+    "allow_squash_merge": false,
+    "allow_rebase_merge": false,
+    "allow_auto_merge": true,
+    "delete_branch_on_merge": true,
+    "has_issues": true,
+    "has_pull_requests": true,
+    "has_discussions": null,
+    "has_wiki": null,
+    "has_projects": null,
+    "description": null,
+    "homepage": null
+  },
+  "reviews": {
+    "required_approving_review_count": 0,
+    "dismiss_stale_reviews_on_push": false,
+    "require_code_owner_review": false,
+    "require_last_push_approval": false,
+    "required_review_thread_resolution": true
+  },
+  "strict_required_status_checks_policy": true,
+  "required_checks": [
+    {"context": "DCO sign-off", "app_slug": "github-actions"},
+    {"context": "DCO checker tests", "app_slug": "github-actions"},
+    {"context": "Secret scan", "app_slug": "github-actions"},
+    {"context": "Repository file policy", "app_slug": "github-actions"}
+  ],
+  "actions": {
+    "default_workflow_permissions": "read",
+    "can_approve_pull_request_reviews": false
+  },
+  "security": {
+    "dependabot_alerts": true,
+    "dependabot_security_updates": false,
+    "private_vulnerability_reporting": true,
+    "secret_scanning": "if_available",
+    "secret_scanning_push_protection": "if_available"
+  }
+}

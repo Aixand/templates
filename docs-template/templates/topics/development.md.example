@@ -1,0 +1,18 @@
+# {{TITLE}}
+
+<!-- AUTHOR: Describe contributor scope and link the package/project map. -->
+
+## Prepare the checkout
+
+<!-- AUTHOR: Use actual pinned tools and supported setup commands. Identify the
+working directory and any isolated runtime state. Link installation-owned policy. -->
+
+## Locate the owning component
+
+<!-- AUTHOR: Map change types to source owners and local contributor guides.
+Describe supported extension boundaries. -->
+
+## Verify a change
+
+<!-- AUTHOR: Give focused checks, expected outcomes, cleanup, and coverage limits.
+Link broader integration/platform checks only when needed. -->

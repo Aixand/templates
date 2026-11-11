@@ -1,0 +1,19 @@
+# {{TITLE}}
+
+<!-- AUTHOR: State scope, audience, and the system question this page answers. -->
+
+## Boundaries and ownership
+
+<!-- AUTHOR: Add a focused Mermaid diagram with accTitle and accDescr. Identify
+processes, state owners, and meaningful communication. Keep code dependency views
+separate. See the template's finished example for diagram style. -->
+
+## Constraints and decisions
+
+<!-- AUTHOR: Explain only guarantees, exceptions, rationale, and failure effects
+that the diagram does not express. Link deeper decisions and exact contracts. -->
+
+## Locate and verify a change
+
+<!-- AUTHOR: Link owning source and local contributor guides. Identify focused
+checks and what they establish. Keep exhaustive execution evidence in the report. -->

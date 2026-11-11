@@ -1,0 +1,16 @@
+# Copy to .github/CODEOWNERS only after choosing real owners.
+# Owners must have sufficient repository access. Teams must be visible and
+# have explicit write access. Replace example-owner, then uncomment rules.
+# Put more specific rules after broader ones; the last matching rule wins.
+
+# *                         @example-owner
+# /.github/                 @example-owner
+# /scripts/checks/          @example-owner
+# /tests/tooling/checks/    @example-owner
+# /LICENSE                  @example-owner
+# /DCO                      @example-owner
+# /CONTRIBUTING.md           @example-owner
+# /CODE_OF_CONDUCT.md        @example-owner
+# /SECURITY.md               @example-owner
+
+# Enable required code-owner review separately in the branch ruleset.

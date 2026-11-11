@@ -1,0 +1,67 @@
+{
+  "$defs": {},
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "checks": {
+      "additionalProperties": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9_-]*(/[a-z0-9][a-z0-9_-]*)*$",
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "component": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+      "type": "string"
+    },
+    "global_commands_created": {
+      "const": false
+    },
+    "helper_python": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "installation_tested": {
+      "type": "boolean"
+    },
+    "kind": {
+      "const": "installation-verification"
+    },
+    "manifest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": 2
+    },
+    "target": {
+      "enum": [
+        "linux-x86_64-gnu",
+        "linux-arm64-gnu",
+        "macos-x86_64",
+        "macos-arm64",
+        "windows-x86_64-msvc",
+        "windows-arm64-msvc"
+      ]
+    },
+    "verified": {
+      "const": true
+    }
+  },
+  "required": [
+    "schema",
+    "kind",
+    "verified",
+    "installation_tested",
+    "manifest_sha256",
+    "target",
+    "helper_python",
+    "checks"
+  ],
+  "title": "Executed/static verification evidence, schema 2",
+  "type": "object"
+}

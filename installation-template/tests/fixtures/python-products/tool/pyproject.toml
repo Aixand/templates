@@ -1,0 +1,16 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fixture-product-tool"
+version = "1.0.0"
+requires-python = ">=3.11"
+dependencies = ["fixture-product-library==1.0.0"]
+license = "Apache-2.0"
+
+[project.scripts]
+fixture-python-product = "fixture_product_tool:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["fixture_product_tool"]

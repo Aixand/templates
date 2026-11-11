@@ -1,0 +1,14 @@
+# {{COMPONENT_NAME}}
+
+<!-- AUTHOR: Describe the component's responsibility, intended reader, and
+supported consumer boundary. Public symbols alone do not establish API support. -->
+
+## Find the owner
+
+<!-- AUTHOR: Link entry points, contracts, related components, and deeper local
+docs only where needed. Link the parent system overview. -->
+
+## Verify a change
+
+<!-- AUTHOR: State directory, prerequisites, focused checks, expected results,
+and relevant platform or integration limits. -->

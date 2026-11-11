@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "include": ["*.md", "files/docs/**/*.md", "profiles/**/*.md", "templates/README.md", "examples/**/*.md", "checks/**/*.md"],
+  "exclude": ["AGENTS.md", "build/**"],
+  "allow_placeholders": false
+}

@@ -1,0 +1,42 @@
+# Governance of {{PROJECT_NAME}}
+
+<!-- Choose the project's real decision process before adopting this document.
+Replace all placeholders; do not invent a committee, voting rule, or appointment. -->
+
+## Scope
+
+The project is maintained by Artificial Intelligence Advancement Initiative Inc.
+This document explains technical decision-making and maintenance responsibilities.
+Contribution and licensing terms are in [CONTRIBUTING.md](CONTRIBUTING.md), and
+participation standards are in [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
+## Proposing changes
+
+Use [issues]({{REPOSITORY_URL}}/issues) and
+[pull requests]({{REPOSITORY_URL}}/pulls) to propose changes.
+For substantial proposals, describe the problem, alternatives, compatibility
+impact, maintenance cost, and proposed validation. Keep security reports private
+as described in [SECURITY.md](SECURITY.md).
+
+## Decisions
+
+{{TECHNICAL_DECISION_PROCESS}}
+
+When a proposal cannot reach agreement, the final decision authority is:
+
+{{FINAL_DECISION_AUTHORITY}}
+
+Record significant decisions and their reasoning in the relevant discussion or
+project documentation. Apply the repository's configured review and check
+requirements. Technical disagreement does not exempt anyone from the code of
+conduct.
+
+## Maintenance responsibilities
+
+See [MAINTAINERS.md](MAINTAINERS.md) for the actual roster and responsibilities.
+The process for adding, changing, or ending maintenance roles is:
+
+{{MAINTAINER_APPOINTMENT_PROCESS}}
+
+Update the roster, code ownership, and GitHub access when roles change. Changes
+to this governance document should follow the decision process above.

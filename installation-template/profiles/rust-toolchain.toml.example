@@ -1,0 +1,4 @@
+[toolchain]
+channel = "{{RUST_VERSION}}"
+profile = "minimal"
+components = ["rustfmt", "clippy"]

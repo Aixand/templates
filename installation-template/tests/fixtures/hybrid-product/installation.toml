@@ -1,0 +1,30 @@
+schema = 2
+profile = "workspace"
+
+[workspace]
+name = "hybrid-fixture"
+version = "1.0.0"
+default-product = "hybrid-fixture"
+targets = ["linux-x86_64-gnu", "linux-arm64-gnu", "macos-x86_64", "macos-arm64", "windows-x86_64-msvc", "windows-arm64-msvc"]
+
+[components.native]
+adapter = "cargo"
+toolchain = "1.98.0"
+binaries = ["fixture-embedded"]
+
+[components.library]
+adapter = "python"
+path = "library"
+python = "3.14"
+
+[products.hybrid-fixture]
+adapter = "hybrid"
+components = ["native", "library"]
+python = "3.14"
+stateful = false
+verification = [["{command:fixture-embedded}", "--self-test"]]
+
+[products.hybrid-fixture.commands.fixture-embedded]
+program = "bin/fixture-embedded{exe}"
+args = ["{python-library}"]
+env = {PYTHONHOME = "{python-home}", PYTHONPATH = "{site-packages}"}

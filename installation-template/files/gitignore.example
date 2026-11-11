@@ -1,0 +1,11 @@
+# Merge these rules with the destination's existing ignore rules.
+__pycache__/
+*.py[cod]
+.venv/
+target/
+dist/
+build/
+*.egg-info/
+.ruff_cache/
+.pytest_cache/
+# Keep uv.lock, Cargo.lock, source resources, and project metadata tracked.

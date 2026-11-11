@@ -1,0 +1,22 @@
+# Maintainers of {{PROJECT_NAME}}
+
+<!-- Fill in the actual roster and responsibilities before installing this file.
+Use public handles or contact details with the person's consent. -->
+
+The project is maintained by Artificial Intelligence Advancement Initiative Inc.
+The following maintainers handle technical review and project maintenance:
+
+| GitHub handle or team | Responsibilities |
+| --- | --- |
+| {{MAINTAINER_HANDLE}} | {{MAINTAINER_RESPONSIBILITIES}} |
+
+Use [SUPPORT.md](SUPPORT.md) for help, [SECURITY.md](SECURITY.md) for private
+vulnerability reports, and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for conduct
+concerns. Listing a maintainer here does not create a response-time commitment.
+
+## Keeping the roster current
+
+Update this file when responsibilities change. Keep CODEOWNERS and actual
+repository access consistent with the roster. Editing this document alone does
+not grant or revoke GitHub permissions. Maintainer status does not transfer
+copyright or alter the project's license.

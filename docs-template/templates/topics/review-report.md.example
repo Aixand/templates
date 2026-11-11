@@ -1,0 +1,18 @@
+# {{TITLE}}
+
+<!-- AUTHOR: Record project, assigned paths, source revision or checkout scope,
+standard version, and target platform. This report is review evidence. -->
+
+## Reader outcomes and corrections
+
+<!-- AUTHOR: Name covered tasks, corrected claims, and consolidated duplicates. -->
+
+## Verification
+
+<!-- AUTHOR: List exact checks actually run and mark each passed, failed, or
+unverified. Name example results and diagram renderer/themes visually inspected. -->
+
+## Remaining gaps
+
+<!-- AUTHOR: Record conflicts, unverified behavior, and missing required paths.
+Do not claim completion while material acceptance requirements remain unmet. -->

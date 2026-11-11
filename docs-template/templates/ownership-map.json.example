@@ -1,0 +1,14 @@
+{
+  "standard_version": "0.1.0",
+  "suite": "{{SUITE_NAME}}",
+  "projects": [
+    {
+      "path": "{{PROJECT_PATH}}",
+      "docs_entry": "{{DOCS_ENTRY}}",
+      "owner": "{{OWNER}}",
+      "allowed_doc_paths": [],
+      "shared_interfaces": [],
+      "verification_commands": []
+    }
+  ]
+}

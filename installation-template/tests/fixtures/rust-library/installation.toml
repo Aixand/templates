@@ -1,0 +1,6 @@
+schema = 1
+profile = "rust-library"
+manifest = "Cargo.toml"
+
+[verification]
+consumer = 'fn main() { assert_eq!(fixture_rust_library::greet("world"), "Hello, world!"); }'

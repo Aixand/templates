@@ -1,0 +1,18 @@
+# {{TITLE}}
+
+<!-- AUTHOR: Name the observable symptom and relevant version/platform scope. -->
+
+## Diagnose the symptom
+
+<!-- AUTHOR: Give diagnostic commands and show how to interpret their outputs.
+Order checks by usefulness. Protect diagnostic payloads according to actual policy. -->
+
+## Apply the correction
+
+<!-- AUTHOR: Map the diagnosed cause to a corrective action. Explain effects
+before destructive actions. Avoid retries when the original effect is uncertain. -->
+
+## Verify recovery
+
+<!-- AUTHOR: Show how to confirm restored behavior. State when to stop and use
+the project's support route, including useful bounded evidence. -->

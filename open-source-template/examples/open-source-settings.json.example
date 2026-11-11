@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "profile": "solo",
+  "repository": "OWNER/REPO",
+  "new_repository": false,
+  "documentation_only": false,
+  "project_checks": [
+    {"context": "REPLACE WITH THE ACTUAL TEST CHECK NAME", "app_slug": "github-actions"}
+  ],
+  "overrides": {}
+}

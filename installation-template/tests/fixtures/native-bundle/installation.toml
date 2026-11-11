@@ -1,0 +1,27 @@
+schema = 2
+profile = "workspace"
+
+[workspace]
+name = "native-fixture"
+version = "1.0.0"
+default-product = "native-fixture"
+targets = ["linux-x86_64-gnu", "linux-arm64-gnu", "macos-x86_64", "macos-arm64", "windows-x86_64-msvc", "windows-arm64-msvc"]
+
+[components.native]
+adapter = "cargo"
+toolchain = "1.98.0"
+binaries = ["fixture-native", "fixture-worker"]
+files = [{source = "resources/message.txt", destination = "share/message.txt"}]
+
+[products.native-fixture]
+adapter = "native"
+components = ["native"]
+version-from = "native"
+stateful = false
+verification = [["{command:fixture-native}", "--self-test"]]
+
+[products.native-fixture.commands.fixture-native]
+program = "bin/fixture-native{exe}"
+
+[products.native-fixture.commands.fixture-worker]
+program = "bin/fixture-worker{exe}"

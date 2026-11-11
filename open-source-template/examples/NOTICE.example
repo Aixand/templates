@@ -1,0 +1,13 @@
+{{PROJECT_NAME}}
+Copyright {{COPYRIGHT_YEARS}} {{COPYRIGHT_OWNER}}
+
+Before installing this file as NOTICE:
+- Replace the fields with accurate ownership information, or omit a project
+  copyright line if it would be misleading.
+- Preserve applicable attribution notices from included third-party material.
+- Use the actual owners; do not claim company ownership of all contributions.
+- Remove these instructions. Do not put additional license restrictions here.
+
+Apache-2.0 does not require every project to create a NOTICE file. Preserve
+required notices from material the project distributes, whether here or in
+another appropriate location as required by the applicable licenses.

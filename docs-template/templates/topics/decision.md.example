@@ -1,0 +1,20 @@
+# {{TITLE}}
+
+Status: Proposed.
+
+<!-- AUTHOR: Supply an accurate date and scope. Change status only with evidence. -->
+
+## Context
+
+<!-- AUTHOR: Explain the concrete constraint and relevant evidence. -->
+
+## Decision
+
+<!-- AUTHOR: State the choice and the alternatives that materially explain it.
+Add a diagram only when relationships or behavior are easier to understand visually. -->
+
+## Consequences
+
+<!-- AUTHOR: Describe tradeoffs, limits, migration, and deferred work. Link
+implementation and verification when implemented. Link the superseding record
+when this decision is replaced; preserve its historical meaning. -->

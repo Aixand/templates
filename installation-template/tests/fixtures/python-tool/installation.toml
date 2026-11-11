@@ -1,0 +1,16 @@
+schema = 1
+profile = "python-tool"
+manifest = "pyproject.toml"
+
+[python]
+version = "3.14"
+
+[commands]
+check = [["uv", "run", "--locked", "ruff", "check", "src", "tests"]]
+test = [["uv", "run", "--locked", "python", "-m", "unittest", "discover", "-s", "tests", "-v"]]
+
+[verification]
+commands = [["{command:fixture-tool}", "--self-test"]]
+
+[install]
+stateful = false

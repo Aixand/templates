@@ -1,0 +1,44 @@
+name: Contribution checks
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review, edited]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checker-tests:
+    name: DCO checker tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      # For PR events, execute only the trusted base's checker and tests.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha || github.sha }}
+          persist-credentials: false
+      - run: python3 tests/tooling/checks/dco_test.py
+
+  dco:
+    name: DCO sign-off
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      # Never check out the PR head or execute code supplied by a contributor.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+      - name: Validate every PR commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/checks/check-dco.py

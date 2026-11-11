@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Local release artifact manifest, schema 1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema", "helper_revision", "name", "version", "profile", "commands", "features", "source", "toolchain", "files", "primary", "target", "runtime", "payload"],
+  "properties": {
+    "schema": {"const": 1}, "helper_revision": {"const": 1},
+    "name": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "version": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._+-]*$"},
+    "profile": {"enum": ["python-library", "python-tool", "rust-library", "rust-cli", "custom"]},
+    "commands": {"type": "array", "items": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"}, "uniqueItems": true},
+    "features": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["commit", "dirty", "source_sha256", "locks"],
+      "properties": {
+        "commit": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40,64}$"},
+        "dirty": {"type": "boolean"},
+        "source_sha256": {"$ref": "#/$defs/digest"},
+        "locks": {"type": "object", "additionalProperties": {"$ref": "#/$defs/digest"}}
+      }
+    },
+    "toolchain": {"type": "object", "required": ["helper_python"], "additionalProperties": {"type": "string"}},
+    "files": {"type": "object", "minProperties": 1, "additionalProperties": {"$ref": "#/$defs/file"}},
+    "primary": {"type": "string", "minLength": 1},
+    "target": {"type": ["string", "null"]},
+    "runtime": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "object", "additionalProperties": false, "required": ["implementation", "minor", "platform", "soabi"],
+         "properties": {"implementation": {"type": "string"}, "minor": {"type": "string", "pattern": "^3\\.[0-9]+$"}, "platform": {"type": "string"}, "soabi": {"type": "string"}}}
+      ]
+    },
+    "payload": {"type": "object", "additionalProperties": {"$ref": "#/$defs/payloadFile"}}
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "file": {"type": "object", "additionalProperties": false, "required": ["sha256", "size"], "properties": {"sha256": {"$ref": "#/$defs/digest"}, "size": {"type": "integer", "minimum": 0, "maximum": 2147483648}}},
+    "payloadFile": {"type": "object", "additionalProperties": false, "required": ["sha256", "size", "executable"], "properties": {"sha256": {"$ref": "#/$defs/digest"}, "size": {"type": "integer", "minimum": 0, "maximum": 2147483648}, "executable": {"type": "boolean"}}}
+  }
+}

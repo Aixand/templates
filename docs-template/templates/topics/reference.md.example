@@ -1,0 +1,19 @@
+# {{TITLE}}
+
+<!-- AUTHOR: Declare contract version and identify owning definitions, schemas,
+registries, implementation, and generated symbol documentation. -->
+
+## Contract
+
+<!-- AUTHOR: Use tables for applicable names, types, defaults, units, constraints,
+precedence, inputs, outputs, and errors. Do not invent fields to fill the template. -->
+
+## Effects and failure behavior
+
+<!-- AUTHOR: Specify timeouts, limits, retries, idempotency, cancellation, and
+uncertain outcomes where they affect callers. Distinguish acceptance from success. -->
+
+## Example
+
+<!-- AUTHOR: Include a minimal verified example or link its maintained source.
+Identify excerpts. Link task guides for complete procedures. -->
